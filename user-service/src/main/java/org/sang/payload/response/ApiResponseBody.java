@@ -1,17 +1,20 @@
 package org.sang.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.sang.exception.BusinessErrorCodes;
 
-public class ApiResponseBody <T> {
+@Data
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ApiResponseBody<T> {
 
 	private boolean success;
 	private String message;
@@ -29,12 +32,12 @@ public class ApiResponseBody <T> {
 		this.data = data;
 	}
 
-	public ApiResponseBody(boolean success, String message, T data, T data1) {
+	public ApiResponseBody(boolean success, String message, T data) {
 		this.success = success;
 		this.message = message;
-		this.data = data1;
+		this.data = data;
 		this.timestamp = ZonedDateTime.now(ZoneOffset.UTC)
 				.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX"));
-
 	}
+
 }
