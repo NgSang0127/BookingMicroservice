@@ -1,6 +1,6 @@
 package org.sang.repository;
 
-import org.sang.modal.User;
+import org.sang.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

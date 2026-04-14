@@ -1,8 +1,7 @@
 package org.sang.service;
 
-import java.util.List;
 import org.sang.exception.UserException;
-import org.sang.modal.User;
+import org.sang.model.User;
 import org.springframework.data.domain.Page;
 
 public interface UserService {

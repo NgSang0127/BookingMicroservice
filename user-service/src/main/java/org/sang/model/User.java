@@ -1,4 +1,4 @@
-package org.sang.modal;
+package org.sang.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

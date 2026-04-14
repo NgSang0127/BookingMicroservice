@@ -1,11 +1,12 @@
 package org.sang.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.sang.exception.UserException;
-import org.sang.modal.User;
+import org.sang.model.User;
+import org.sang.payload.dto.KeycloakUserInfo;
 import org.sang.repository.UserRepository;
+import org.sang.service.KeycloakUserService;
 import org.sang.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
+	private final KeycloakUserService keycloakUserService;
 
 	@Override
 	public User getByUserByEmail(String email) throws UserException {
@@ -28,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserFromJwtToken(String jwt) throws Exception {
-		return null;
+		KeycloakUserInfo userinfo = keycloakUserService.fetchUserProfileByJwt(jwt);
+		return userRepository.findByEmail(userinfo.getEmail());
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User createUser(User user) {
-		return null;
+		return userRepository.save(user);
 	}
 
 	@Override

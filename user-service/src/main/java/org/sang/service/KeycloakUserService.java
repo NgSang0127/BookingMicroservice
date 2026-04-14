@@ -20,18 +20,18 @@ import org.springframework.http.*;
 @RequiredArgsConstructor
 public class KeycloakUserService {
 
-	private static final String KEYCLOAK_BASE_URL = "http://localhost:8080";
+	private static final String KEYCLOAK_BASE_URL = "http://localhost:7080";
 
 	private static final String KEYCLOAK_ADMIN_API = KEYCLOAK_BASE_URL + "/admin/realms/master/users";
 
 	private static final String TOKEN_URL = KEYCLOAK_BASE_URL + "/realms/master/protocol/openid-connect/token";
-	private static final String CLIENT_ID = "salon-booking-client"; // Replace with your client ID
-	private static final String CLIENT_SECRET = "txByPyRgUEWZiliRz9OQLXuPE7P5xpZ9"; // Replace with your client secret
+	private static final String CLIENT_ID = "clinic-booking-client"; // Replace with your client ID
+	private static final String CLIENT_SECRET = "d2IoIzd0YdlOfsnPJTDjM8y5zwhYxCeE"; // Replace with your client secret
 	private static final String GRANT_TYPE = "password";
 	private static final String scope = "openid email profile"; // Adjust grant type if necessary
-	private static final String username = "admin@gmail.com";
+	private static final String username = "sang";
 	private static final String password = "admin";
-	private static final String clientId = "a43dab90-8534-40ca-b1f1-96f062e16674";
+	private static final String clientId = "e432d8a9-d8c0-4673-af57-dbdee71d7eb4";
 
 	private final RestTemplate restTemplate;
 

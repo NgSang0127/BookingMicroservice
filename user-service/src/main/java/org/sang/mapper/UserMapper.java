@@ -1,6 +1,6 @@
 package org.sang.mapper;
 
-import org.sang.modal.User;
+import org.sang.model.User;
 import org.sang.payload.dto.UserDTO;
 import org.springframework.stereotype.Service;
 

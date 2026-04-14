@@ -2,26 +2,44 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="gateway-server" />
         <module name="user-service" />
+        <module name="eureka-server" />
+        <module name="review-service" />
+        <module name="notification-service" />
       </profile>
-      <profile name="Annotation profile for clinic-service" enabled="true">
+      <profile name="Annotation profile for payment-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.44/lombok-1.18.44.jar" />
         </processorPath>
+        <module name="payment-service" />
+        <module name="category-service" />
         <module name="clinic-service" />
+        <module name="offer-service" />
+        <module name="booking-service" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="booking-service" options="-parameters" />
+      <module name="category-service" options="-parameters" />
       <module name="clinic-service" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="gateway-server" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
+      <module name="offer-service" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
+      <module name="review-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
