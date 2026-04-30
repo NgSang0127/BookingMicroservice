@@ -1,4 +1,4 @@
-package org.sang.domain;
+package org.sang.constant;
 
 public enum UserRole {
 	CUSTOMER,

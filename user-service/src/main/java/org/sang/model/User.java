@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import org.sang.domain.UserRole;
+import org.sang.constant.UserRole;
 
 @Entity
 @Table(name = "users")
@@ -47,5 +47,6 @@ public class User {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 
-
+	@Column(name = "keycloak_id", unique = true, nullable = true)
+	private String keycloakId; // = JWT "sub" claim — link với Keycloak
 }

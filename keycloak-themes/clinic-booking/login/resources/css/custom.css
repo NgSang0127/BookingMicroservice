@@ -1,0 +1,86 @@
+/* ── Google Font ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.logo-text {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.05em; /* Giống tracking-tighter trong Tailwind */
+  text-transform: uppercase;
+
+  /* Tạo hiệu ứng màu Gradient cho chữ */
+  background: linear-gradient(to right, #184aab 0%, #089de5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+
+  display: inline-block;
+  margin-top: 4px;
+
+  /* Đổ bóng nhẹ để chữ nổi bật trên nền xanh đậm */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+#kc-logo-area {
+  display: flex;
+  flex-direction: column; /* Xếp logo trên chữ */
+  align-items: center;    /* Căn giữa theo chiều ngang */
+  justify-content: center;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+/* 2. CĂN THẲNG HÀNG REMEMBER ME (Ô vuông và chữ) */
+.form-options label {
+  display: flex;       /* Dùng Flexbox */
+  align-items: center; /* Căn thẳng hàng theo chiều dọc */
+  gap: 8px;            /* Khoảng cách giữa ô vuông và chữ */
+  font-size: 13px;
+  color: var(--n500);
+  cursor: pointer;
+  margin: 0;           /* Xóa margin mặc định */
+}
+
+.form-options input[type="checkbox"] {
+  margin: 0; /* Xóa margin mặc định của ô checkbox */
+  width: 16px;
+  height: 16px;
+}
+
+/* 3. CĂN VỊ TRÍ NÚT MẮT HIỆN MẬT KHẨU */
+.password-wrapper {
+  position: relative; /* Container làm mốc tọa độ */
+  width: 100%;
+}
+
+.password-wrapper .form-control {
+  padding-right: 40px !important; /* Chừa chỗ cho icon mắt không đè lên chữ */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%); /* Căn giữa hoàn hảo theo chiều dọc */
+  cursor: pointer;
+  color: var(--n400); /* Màu xám nhẹ cho icon */
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.toggle-password:hover {
+  color: var(--brand-500); /* Đổi màu khi hover */
+}
+.login-pf .login-pf-page .card-pf .login-pf-header {
+  /* Trỏ đến file SVG của bạn */
+  background-image: url('../img/logo.svg');
+
+  /* Đảm bảo logo không bị vỡ hoặc mất hình */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* Điều chỉnh chiều cao phù hợp với tỉ lệ logo SVG */
+  height: 80px;
+  margin-bottom: 20px;
+}
