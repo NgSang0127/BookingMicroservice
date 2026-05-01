@@ -1,14 +1,14 @@
 package org.sang.service.impl;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.sang.exception.UserException;
 import org.sang.model.User;
-import org.sang.payload.dto.KeycloakUserInfo;
 import org.sang.repository.UserRepository;
 import org.sang.service.KeycloakUserService;
 import org.sang.service.UserService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
+	@Cacheable(value = "users", key = "#id")
 	public User getUserById(Long id) throws UserException {
 		return userRepository.findById(id).orElseThrow(
 				()-> new UserException ("User not found with id: "+id)
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
+	@CacheEvict(value = "users", key = "#id")
 	public User updateUser(Long id, User user) throws UserException {
 		User existingUser = userRepository.findById(id)
 				.orElseThrow(() -> new UserException("User does not exist with id: " + id));
@@ -68,6 +70,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
+	@Cacheable(value = "users", key = "#keycloakId")
 	public User getByKeycloakId(String keycloakId) throws UserException {
 		return userRepository.findByKeycloakId(keycloakId)
 				.orElseThrow(() -> new UserException(
