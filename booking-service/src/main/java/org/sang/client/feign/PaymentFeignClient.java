@@ -1,6 +1,5 @@
 package org.sang.client.feign;
 
-import com.razorpay.RazorpayException;
 import org.sang.constant.PaymentMethod;
 import org.sang.exception.UserException;
 import org.sang.model.Booking;
@@ -17,8 +16,6 @@ public interface PaymentFeignClient {
 
 	@PostMapping("/api/payments/create")
 	public ResponseEntity<PaymentLinkResponse> createPaymentLink(
-			@RequestHeader("Authorization") String jwt,
 			@RequestBody Booking booking,
-			@RequestParam PaymentMethod paymentMethod) throws UserException,
-			RazorpayException;
+			@RequestParam PaymentMethod paymentMethod) throws UserException;
 }

@@ -43,6 +43,7 @@ public class ClinicServiceImpl implements ClinicService {
 
 			existingClinic.setName(clinic.getName());
 			existingClinic.setAddress(clinic.getAddress());
+			existingClinic.setImages(clinic.getImages());
 			existingClinic.setPhoneNumber(clinic.getPhoneNumber());
 			existingClinic.setEmail(clinic.getEmail());
 			existingClinic.setCity(clinic.getCity());

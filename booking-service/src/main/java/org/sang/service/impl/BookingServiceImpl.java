@@ -70,30 +70,28 @@ public class BookingServiceImpl implements BookingService {
 	public Boolean isTimeSlotAvailable(ClinicDTO clinic,
 			LocalDateTime bookingStartTime,
 			LocalDateTime bookingEndTime) throws Exception {
-		List<Booking> existingBookings = getBookingsByClinic(clinic.getId());
+
+		List<Booking> existingBookings = getBookingsByClinic(clinic.getId())
+				.stream()
+				.filter(b -> b.getStatus() != BookingStatus.CANCELLED)
+				.toList();
 
 		LocalDateTime clinicOpenTime = clinic.getOpenTime().atDate(bookingStartTime.toLocalDate());
 		LocalDateTime clinicCloseTime = clinic.getCloseTime().atDate(bookingStartTime.toLocalDate());
 
-		if (bookingStartTime.isBefore(clinicOpenTime)
-				|| bookingEndTime.isAfter(clinicCloseTime)) {
+		if (bookingStartTime.isBefore(clinicOpenTime) || bookingEndTime.isAfter(clinicCloseTime)) {
 			throw new Exception("Booking time must be within clinic's open hours.");
-			//return false;
-
 		}
 
 		for (Booking existingBooking : existingBookings) {
-			LocalDateTime existingStartTime = existingBooking.getStartTime();
-			LocalDateTime existingEndTime = existingBooking.getEndTime();
+			LocalDateTime existingStart = existingBooking.getStartTime();
+			LocalDateTime existingEnd = existingBooking.getEndTime();
 
-			// Check if new booking's time overlaps with any existing booking
-			if ((bookingStartTime.isBefore(existingEndTime)
-					&& bookingEndTime.isAfter(existingStartTime)) ||
-					bookingStartTime.isEqual(existingStartTime) || bookingEndTime.isEqual(existingEndTime)) {
-				throw new Exception("slot not available, choose different time.");
-				//return false;
+			if (bookingStartTime.isBefore(existingEnd) && bookingEndTime.isAfter(existingStart)) {
+				throw new Exception("Slot not available, choose different time.");
 			}
 		}
+
 		return true;
 	}
 

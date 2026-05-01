@@ -20,7 +20,7 @@ public class ClinicMapper {
 		clinicDTO.setPhoneNumber(clinic.getPhoneNumber());
 		clinicDTO.setEmail(clinic.getEmail());
 		clinicDTO.setCity(clinic.getCity());
-//        clinicDTO.setIsOpen(clinic.isOpen());
+        clinicDTO.setOpen(clinic.isOpen());
 		clinicDTO.setHomeService(clinic.isHomeService());
 		clinicDTO.setActive(clinic.isActive());
 		clinicDTO.setOwnerId(clinic.getOwnerId());

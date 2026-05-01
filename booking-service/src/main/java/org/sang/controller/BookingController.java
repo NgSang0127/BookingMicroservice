@@ -25,6 +25,8 @@ import org.sang.payload.response.PaymentLinkResponse;
 import org.sang.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,11 +50,11 @@ public class BookingController {
 	private final UserFeignClient userFeignClient;
 
 	@PostMapping
-	public ResponseEntity<PaymentLinkResponse> createBooking(@RequestHeader("Authorization") String jwt,
+	public ResponseEntity<PaymentLinkResponse> createBooking(
 			@RequestParam Long clinicId, @RequestParam PaymentMethod paymentMethod,
 			@RequestBody BookingRequest bookingRequest) throws Exception {
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
 		ClinicDTO clinic = clinicService.getClinicById(clinicId).getBody();
 
@@ -64,7 +66,7 @@ public class BookingController {
 				.getBody();
 
 		Booking createdBooking = bookingService.createBooking(bookingRequest, user, clinic, services);
-		PaymentLinkResponse res = paymentService.createPaymentLink(jwt, createdBooking, paymentMethod).getBody();
+		PaymentLinkResponse res = paymentService.createPaymentLink(createdBooking, paymentMethod).getBody();
 
 		return new ResponseEntity<>(res, HttpStatus.CREATED);
 
@@ -74,10 +76,10 @@ public class BookingController {
 	 * Get all bookings for a customer
 	 */
 	@GetMapping("/customer")
-	public ResponseEntity<Set<BookingDTO>> getBookingsByCustomer(@RequestHeader("Authorization") String jwt)
+	public ResponseEntity<Set<BookingDTO>> getBookingsByCustomer()
 			throws UserException {
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
 		List<Booking> bookings = bookingService.getBookingsByCustomer(user.getId());
 
@@ -89,11 +91,11 @@ public class BookingController {
 	 * Get all bookings for a clinic
 	 */
 	@GetMapping("/report")
-	public ResponseEntity<ClinicReport> getClinicReport(@RequestHeader("Authorization") String jwt) throws Exception {
+	public ResponseEntity<ClinicReport> getClinicReport() throws Exception {
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
-		ClinicDTO clinic = clinicService.getClinicByOwner(jwt).getBody();
+		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 
 		ClinicReport report = bookingService.getClinicReport(clinic.getId());
 
@@ -102,13 +104,11 @@ public class BookingController {
 	}
 
 	@GetMapping("/clinic")
-	public ResponseEntity<Set<BookingDTO>> getBookingsByClinic(
+	public ResponseEntity<Set<BookingDTO>> getBookingsByClinic() throws Exception {
 
-			@RequestHeader("Authorization") String jwt) throws Exception {
+		UserDTO user = userService.getUserProfile().getBody();
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
-
-		ClinicDTO clinic = clinicService.getClinicByOwner(jwt).getBody();
+		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 
 		List<Booking> bookings = bookingService.getBookingsByClinic(clinic.getId());
 
@@ -179,7 +179,7 @@ public class BookingController {
 
 	@GetMapping("/slots/clinic/{clinicId}/date/{date}")
 	public ResponseEntity<List<BookedSlotsDTO>> getBookedSlots(@PathVariable Long clinicId,
-			@PathVariable LocalDate date, @RequestHeader("Authorization") String jwt) throws Exception {
+			@PathVariable LocalDate date) throws Exception {
 
 		List<Booking> bookings = bookingService.getBookingsByDate(date, clinicId);
 

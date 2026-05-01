@@ -23,9 +23,8 @@ public class ClinicCategoryController {
 
 	@PostMapping
 	public ResponseEntity<Category> createCategory(
-			@RequestBody Category category,
-			@RequestHeader("Authorization") String jwt) throws Exception {
-		ClinicDTO clinic = clinicService.getClinicByOwner(jwt).getBody();
+			@RequestBody Category category) throws Exception {
+		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 
 		Category savedCategory = categoryService.saveCategory(category, clinic);
 		return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);

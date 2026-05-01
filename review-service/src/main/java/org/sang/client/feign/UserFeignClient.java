@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface UserFeignClient {
 
 	@GetMapping("/api/users/profile")
-	public ResponseEntity<UserDTO> getUserFromJwtToken(
-			@RequestHeader("Authorization") String jwt)
-			throws UserException;
+	ResponseEntity<UserDTO> getUserProfile();
 
 	@GetMapping("/api/users/{userId}")
 	public ResponseEntity<UserDTO> getUserById(

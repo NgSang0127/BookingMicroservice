@@ -24,12 +24,9 @@ public class ChartController {
 	private final ClinicFeignClient clinicService;
 
 	@GetMapping("/earnings")
-	public ResponseEntity<List<Map<String, Object>>> getEarningsChartData(
-			@RequestHeader("Authorization") String jwt) throws Exception {
+	public ResponseEntity<List<Map<String, Object>>> getEarningsChartData() throws Exception {
 
-//        UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
-
-		ClinicDTO clinic = clinicService.getClinicByOwner(jwt).getBody();
+		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 		List<Booking> bookings=bookingService.getBookingsByClinic(clinic.getId());
 
 		// Generate chart data
@@ -41,10 +38,9 @@ public class ChartController {
 	}
 
 	@GetMapping("/bookings")
-	public ResponseEntity<List<Map<String, Object>>> getBookingsChartData(
-			@RequestHeader("Authorization") String jwt) throws Exception {
+	public ResponseEntity<List<Map<String, Object>>> getBookingsChartData() throws Exception {
 
-		ClinicDTO clinic = clinicService.getClinicByOwner(jwt).getBody();
+		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 		List<Booking> bookings=bookingService.getBookingsByClinic(clinic.getId());
 		// Generate chart data
 		List<Map<String, Object>> chartData = bookingChartService.generateBookingCountChartData(bookings);

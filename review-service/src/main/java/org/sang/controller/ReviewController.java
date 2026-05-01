@@ -51,10 +51,9 @@ public class ReviewController {
 	@PostMapping("/clinic/{clinicId}")
 	public ResponseEntity<ReviewDTO> writeReview(
 			@RequestBody CreateReviewRequest req,
-			@PathVariable Long clinicId,
-			@RequestHeader("Authorization") String jwt) throws Exception {
+			@PathVariable Long clinicId) throws Exception {
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 		ClinicDTO product = clinicService.getClinicById(clinicId).getBody();
 
 
@@ -74,11 +73,10 @@ public class ReviewController {
 	@PatchMapping("/{reviewId}")
 	public ResponseEntity<Review> updateReview(
 			@RequestBody CreateReviewRequest req,
-			@PathVariable Long reviewId,
-			@RequestHeader("Authorization") String jwt)
+			@PathVariable Long reviewId)
 			throws Exception {
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
 		Review review = reviewService.updateReview(
 				reviewId,
@@ -92,11 +90,10 @@ public class ReviewController {
 
 	@DeleteMapping("/{reviewId}")
 	public ResponseEntity<ApiResponse> deleteReview(
-			@PathVariable Long reviewId,
-			@RequestHeader("Authorization") String jwt) throws Exception
+			@PathVariable Long reviewId) throws Exception
 	{
 
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
 		reviewService.deleteReview(reviewId, user.getId());
 		ApiResponse res = new ApiResponse("Review deleted successfully");

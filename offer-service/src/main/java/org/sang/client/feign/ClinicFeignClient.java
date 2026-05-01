@@ -9,6 +9,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient("CLINIC-SERVICE")
 public interface ClinicFeignClient {
 	@GetMapping("/api/clinics/owner")
-	public ResponseEntity<ClinicDTO> getClinicByOwner(
-			@RequestHeader("Authorization")String jwt) throws Exception;
+	public ResponseEntity<ClinicDTO> getClinicByOwner() throws Exception;
 }

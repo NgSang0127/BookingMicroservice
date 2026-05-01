@@ -29,10 +29,9 @@ public class ClinicServiceOfferController {
 
 	@PostMapping
 	public ResponseEntity<ServiceOffer> createService(
-			@RequestHeader("Authorization") String jwt,
 			@RequestBody ServiceDTO service) throws Exception {
 
-		ClinicDTO clinic=clinicService.getClinicByOwner(jwt).getBody();
+		ClinicDTO clinic=clinicService.getClinicByOwner().getBody();
 
 		CategoryDTO category=categoryService
 				.getCategoryById(service.getCategory()).getBody();

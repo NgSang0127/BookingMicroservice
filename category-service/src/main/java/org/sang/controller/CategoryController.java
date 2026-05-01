@@ -32,9 +32,8 @@ public class CategoryController {
 	// Get all Categories by Salon ID
 	@GetMapping("/clinic/{id}")
 	public ResponseEntity<Set<Category>> getCategoriesByClinic(
-			@PathVariable Long id,
-			@RequestHeader("Authorization") String jwt) throws Exception {
-		UserDTO user=userService.getUserFromJwtToken(jwt).getBody();
+			@PathVariable Long id) throws Exception {
+		UserDTO user=userService.getUserProfile().getBody();
 		ClinicDTO clinic=clinicService.getClinicById(id).getBody();
 
 		Set<Category> categories = categoryService

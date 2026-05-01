@@ -20,4 +20,5 @@ public class ClinicDTO {
 	private LocalTime openTime;
 	private LocalTime closeTime;
 	private List<String> images;
+
 }

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/clinic")
+@RequestMapping("/api/clinics")
 public class ClinicController {
 
 	private final ClinicService clinicService;
@@ -33,9 +33,8 @@ public class ClinicController {
 
 	@PostMapping
 	public ResponseEntity<ClinicDTO> createClinic(
-			@RequestHeader("Authorization") String jwt,
 			@RequestBody ClinicDTO clinic) throws UserException {
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+		UserDTO user = userService.getUserProfile().getBody();
 
 		Clinic createdClinic = clinicService.createClinic(clinic, user);
 
@@ -108,9 +107,8 @@ public class ClinicController {
 	}
 
 	@GetMapping("/owner")
-	public ResponseEntity<Clinic> getClinicByOwner(
-			@RequestHeader("Authorization") String jwt) throws Exception {
-		UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+	public ResponseEntity<Clinic> getClinicByOwner() throws Exception {
+		UserDTO user = userService.getUserProfile().getBody();
 		System.out.println("Clinic " + user);
 		Clinic clinic = clinicService.getClinicByOwnerId(user.getId());
 

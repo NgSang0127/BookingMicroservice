@@ -4,79 +4,47 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.sang.model.User;
 import org.sang.payload.request.SignUpDTO;
-import org.sang.payload.response.AuthResponse;
-import org.sang.payload.response.TokenResponse;
 import org.sang.repository.UserRepository;
 import org.sang.service.AuthService;
 import org.sang.service.KeycloakUserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+
 	private final UserRepository userRepository;
 	private final KeycloakUserService keycloakUserService;
 
 	@Override
-	public AuthResponse signup(SignUpDTO req) throws Exception {
+	@Transactional
+	public void signup(SignUpDTO req) throws Exception {
+		// 1. Tạo user trong Keycloak → nhận keycloakId
+		String keycloakId = keycloakUserService.createUser(req);
 
-		keycloakUserService.createUser(req);
+		// 2. Lưu profile vào DB — keycloakId là cầu nối
+		User user = new User();
+		user.setKeycloakId(keycloakId);
+		user.setEmail(req.getEmail());
+		user.setFullName(req.getFirstName() +" "+ req.getLastName());
+		user.setPhone(req.getPhone());
+		user.setRole(req.getRole());
+		user.setUsername(req.getEmail());
+		user.setCreatedAt(LocalDateTime.now());
+		userRepository.save(user);
 
-		User createdUser = new User();
-		createdUser.setEmail(req.getEmail());
-		createdUser.setCreatedAt(LocalDateTime.now());
-		createdUser.setPhone(req.getPhone());
-		createdUser.setRole(req.getRole());
-		createdUser.setFullName(req.getFullName());
-		createdUser.setUsername(req.getUsername());
-		userRepository.save(createdUser);
-
-
-		TokenResponse tokenResponse= keycloakUserService.getAdminAccessToken(
-				req.getUsername(),
-				req.getPassword(),
-				"password",
-				null
-		);
-
-		AuthResponse response = new AuthResponse();
-		response.setTitle("Welcome " + createdUser.getEmail());
-		response.setMessage("Register success");
-		response.setJwt(tokenResponse.getAccessToken());
-		response.setRefresh_token(tokenResponse.getRefreshToken());
-		return response;
+		// KHÔNG trả token — React redirect sang Keycloak login page sau khi signup
 	}
 
 	@Override
-	public AuthResponse getAccessTokenFromRefreshToken(String refreshToken) throws Exception {
-		TokenResponse tokenResponse= keycloakUserService.getAdminAccessToken(
-				null,
-				null,
-				"refresh_token",
-				refreshToken
-		);
-		AuthResponse response = new AuthResponse();
-
-		response.setMessage("Access token received");
-		response.setJwt(tokenResponse.getAccessToken());
-		response.setRefresh_token(tokenResponse.getRefreshToken());
-		return response;
+	public void forgotPassword(String email) throws Exception {
+		keycloakUserService.sendResetPasswordEmailByEmail(email);
 	}
 
 	@Override
-	public AuthResponse login(String username, String password) throws Exception {
-		TokenResponse tokenResponse=keycloakUserService.getAdminAccessToken(
-				username,
-				password,
-				"password",
-				null
-		);
-		AuthResponse response = new AuthResponse();
-		response.setTitle("Welcome Back " + username);
-		response.setMessage("login success");
-		response.setJwt(tokenResponse.getAccessToken());
-		response.setRefresh_token(tokenResponse.getRefreshToken());
-		return response;
+	public void changePassword(String keycloakId, String newPassword) throws Exception {
+		// keycloakId lấy từ header X-User-Id (Gateway đã extract từ JWT)
+		keycloakUserService.changePassword(keycloakId, newPassword);
 	}
-
 }
