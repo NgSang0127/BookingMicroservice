@@ -35,4 +35,18 @@ public class GlobalExceptionHandler {
 				req.getDescription(false), LocalDateTime.now());
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(feign.FeignException.class)
+	public ResponseEntity<ExceptionResponse> handleFeignException(feign.FeignException ex, WebRequest req) {
+		int status = ex.status();
+		if (status <= 0) status = 500;
+
+		ExceptionResponse response = new ExceptionResponse(
+				"Lỗi từ Service liên kết: " + ex.contentUTF8(),
+				req.getDescription(false),
+				LocalDateTime.now()
+		);
+
+		return ResponseEntity.status(status).body(response);
+	}
 }

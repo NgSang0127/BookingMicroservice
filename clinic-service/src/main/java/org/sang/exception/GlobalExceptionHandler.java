@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(UserException.class)
 	public ResponseEntity<ExceptionResponse> UserExceptionHandler(
-			ReviewException ex, WebRequest req) {
+			org.sang.exception.UserException ex, WebRequest req) {
 		ExceptionResponse response = new ExceptionResponse(
 				ex.getMessage(),
 				req.getDescription(false), LocalDateTime.now());
@@ -36,5 +36,19 @@ public class GlobalExceptionHandler {
 				ex.getMessage(),
 				req.getDescription(false), LocalDateTime.now());
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(feign.FeignException.class)
+	public ResponseEntity<ExceptionResponse> handleFeignException(feign.FeignException ex, WebRequest req) {
+		int status = ex.status();
+		if (status <= 0) status = 500;
+
+		ExceptionResponse response = new ExceptionResponse(
+				"Lỗi từ Service liên kết: " + ex.contentUTF8(),
+				req.getDescription(false),
+				LocalDateTime.now()
+		);
+
+		return ResponseEntity.status(status).body(response);
 	}
 }
