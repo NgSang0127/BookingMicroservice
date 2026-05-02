@@ -28,6 +28,7 @@ public class SecurityConfig {
 				.csrf(ServerHttpSecurity.CsrfSpec::disable) // Disable CSRF đầu tiên
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeExchange(exchanges -> exchanges
+						.pathMatchers("/actuator/**").permitAll()
 						.pathMatchers("/api/notifications/ws/**").permitAll()
 						.pathMatchers("/auth/**").permitAll()
 						.pathMatchers(org.springframework.http.HttpMethod.OPTIONS).permitAll()

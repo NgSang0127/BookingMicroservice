@@ -20,6 +20,7 @@ public class SecurityConfig {
 						s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/actuator/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
