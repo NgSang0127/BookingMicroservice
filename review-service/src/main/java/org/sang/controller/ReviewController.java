@@ -36,7 +36,7 @@ public class ReviewController {
 				{
 					UserDTO user= null;
 					try {
-						user = userService.getUserById(review.getUserId()).getBody();
+						user = userService.getUserById(review.getUserId());
 					} catch (UserException e) {
 						throw new RuntimeException(e);
 					}
@@ -53,7 +53,7 @@ public class ReviewController {
 			@RequestBody CreateReviewRequest req,
 			@PathVariable Long clinicId) throws Exception {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 		ClinicDTO product = clinicService.getClinicById(clinicId).getBody();
 
 
@@ -62,7 +62,7 @@ public class ReviewController {
 		);
 		UserDTO reviewer = userService.getUserById(
 				review.getUserId()
-		).getBody();
+		);
 
 		ReviewDTO reviewDTO= ReviewMapper.mapToDTO(review,reviewer);
 
@@ -76,7 +76,7 @@ public class ReviewController {
 			@PathVariable Long reviewId)
 			throws Exception {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		Review review = reviewService.updateReview(
 				reviewId,
@@ -93,7 +93,7 @@ public class ReviewController {
 			@PathVariable Long reviewId) throws Exception
 	{
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		reviewService.deleteReview(reviewId, user.getId());
 		ApiResponse res = new ApiResponse("Review deleted successfully");

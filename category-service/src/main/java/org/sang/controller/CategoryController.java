@@ -33,7 +33,7 @@ public class CategoryController {
 	@GetMapping("/clinic/{id}")
 	public ResponseEntity<Set<Category>> getCategoriesByClinic(
 			@PathVariable Long id) throws Exception {
-		UserDTO user=userService.getUserProfile().getBody();
+		UserDTO user=userService.getUserProfile();
 		ClinicDTO clinic=clinicService.getClinicById(id).getBody();
 
 		Set<Category> categories = categoryService

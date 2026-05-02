@@ -34,7 +34,7 @@ public class ClinicController {
 	@PostMapping
 	public ResponseEntity<ClinicDTO> createClinic(
 			@RequestBody ClinicDTO clinic) throws UserException {
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		Clinic createdClinic = clinicService.createClinic(clinic, user);
 
@@ -49,7 +49,7 @@ public class ClinicController {
 			@RequestBody Clinic clinic
 	) throws Exception {
 		Clinic updatedClinic = clinicService.updateClinic(clinicId, clinic);
-		UserDTO user = userService.getUserById(updatedClinic.getOwnerId()).getBody();
+		UserDTO user = userService.getUserById(updatedClinic.getOwnerId());
 
 		ClinicDTO clinicDTO = ClinicMapper.mapToDTO(updatedClinic, user);
 
@@ -68,8 +68,7 @@ public class ClinicController {
 			UserDTO owner = null;
 			try {
 				owner = userService
-						.getUserById(clinic.getOwnerId())
-						.getBody();
+						.getUserById(clinic.getOwnerId());
 			} catch (UserException e) {
 				throw new RuntimeException(e);
 			}
@@ -86,7 +85,7 @@ public class ClinicController {
 		if (clinic == null) {
 			throw new Exception("Clinic does not exist with id " + clinicId);
 		}
-		UserDTO user = userService.getUserById(clinic.getOwnerId()).getBody();
+		UserDTO user = userService.getUserById(clinic.getOwnerId());
 
 		ClinicDTO clinicDTO = ClinicMapper.mapToDTO(clinic, user);
 
@@ -99,7 +98,7 @@ public class ClinicController {
 		List<Clinic> clinics = clinicService.searchClinicByCity(city);
 		List<ClinicDTO> clinicDTOS = new ArrayList<>();
 		for (Clinic clinic1 : clinics) {
-			UserDTO owner = userService.getUserById(clinic1.getOwnerId()).getBody();
+			UserDTO owner = userService.getUserById(clinic1.getOwnerId());
 			ClinicDTO apply = ClinicMapper.mapToDTO(clinic1, owner);
 			clinicDTOS.add(apply);
 		}
@@ -108,7 +107,7 @@ public class ClinicController {
 
 	@GetMapping("/owner")
 	public ResponseEntity<Clinic> getClinicByOwner() throws Exception {
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 		System.out.println("Clinic " + user);
 		Clinic clinic = clinicService.getClinicByOwnerId(user.getId());
 

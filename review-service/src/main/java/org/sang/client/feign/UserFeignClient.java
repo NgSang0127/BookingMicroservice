@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface UserFeignClient {
 
 	@GetMapping("/api/users/profile")
-	ResponseEntity<UserDTO> getUserProfile();
+	UserDTO getUserProfile();
 
 	@GetMapping("/api/users/{userId}")
-	public ResponseEntity<UserDTO> getUserById(
+	UserDTO getUserById(
 			@PathVariable Long userId
 	) throws UserException;
 }

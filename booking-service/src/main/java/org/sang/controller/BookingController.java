@@ -54,7 +54,7 @@ public class BookingController {
 			@RequestParam Long clinicId, @RequestParam PaymentMethod paymentMethod,
 			@RequestBody BookingRequest bookingRequest) throws Exception {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		ClinicDTO clinic = clinicService.getClinicById(clinicId).getBody();
 
@@ -79,7 +79,7 @@ public class BookingController {
 	public ResponseEntity<Set<BookingDTO>> getBookingsByCustomer()
 			throws UserException {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		List<Booking> bookings = bookingService.getBookingsByCustomer(user.getId());
 
@@ -93,7 +93,7 @@ public class BookingController {
 	@GetMapping("/report")
 	public ResponseEntity<ClinicReport> getClinicReport() throws Exception {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 
@@ -106,7 +106,7 @@ public class BookingController {
 	@GetMapping("/clinic")
 	public ResponseEntity<Set<BookingDTO>> getBookingsByClinic() throws Exception {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 
 		ClinicDTO clinic = clinicService.getClinicByOwner().getBody();
 
@@ -127,7 +127,7 @@ public class BookingController {
 			ClinicDTO clinicDTO;
 			try {
 				clinicDTO = clinicService.getClinicById(booking.getClinicId()).getBody();
-				user = userFeignClient.getUserById(booking.getCustomerId()).getBody();
+				user = userFeignClient.getUserById(booking.getCustomerId());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

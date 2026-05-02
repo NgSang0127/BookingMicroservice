@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient("USER-SERVICE")
 public interface UserFeignClient {
 	@GetMapping("/api/users/profile")
-	ResponseEntity<UserDTO> getUserProfile() throws UserException;
+	UserDTO getUserProfile() throws UserException;
 }
