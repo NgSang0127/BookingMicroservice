@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalTime;
 import java.util.List;
+import org.sang.constant.ClinicStatus;
 
 @Data
 public class ClinicDTO {
@@ -16,7 +17,7 @@ public class ClinicDTO {
 	private String city;
 	private boolean isOpen;
 	private boolean homeService;
-	private boolean active;
+	private ClinicStatus status;
 	private Long ownerId;
 	private LocalTime openTime;
 	private LocalTime closeTime;

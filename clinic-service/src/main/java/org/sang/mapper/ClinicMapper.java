@@ -22,7 +22,7 @@ public class ClinicMapper {
 		clinicDTO.setCity(clinic.getCity());
         clinicDTO.setOpen(clinic.isOpen());
 		clinicDTO.setHomeService(clinic.isHomeService());
-		clinicDTO.setActive(clinic.isActive());
+		clinicDTO.setStatus(clinic.getStatus());
 		clinicDTO.setOwnerId(clinic.getOwnerId());
 		clinicDTO.setOpenTime(clinic.getOpenTime());
 		clinicDTO.setCloseTime(clinic.getCloseTime());

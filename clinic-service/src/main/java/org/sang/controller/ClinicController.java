@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.sang.client.feign.UserFeignClient;
+import org.sang.constant.ClinicStatus;
 import org.sang.exception.UserException;
 import org.sang.mapper.ClinicMapper;
 import org.sang.model.Clinic;
 import org.sang.payload.dto.ClinicDTO;
 import org.sang.payload.dto.UserDTO;
+import org.sang.payload.request.ApproveClinicRequest;
 import org.sang.service.ClinicService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,9 +65,10 @@ public class ClinicController {
 	@GetMapping
 	public ResponseEntity<Page<ClinicDTO>> getAllClinics(
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(required = false) ClinicStatus status
 	) throws UserException {
-		Page<Clinic> clinics = clinicService.getAllClinics(page, size);
+		Page<Clinic> clinics = clinicService.getAllClinics(page, size,status);
 		Page<ClinicDTO> clinicDTOPage = clinics.map(clinic -> {
 			UserDTO owner = null;
 			try {
@@ -112,5 +117,27 @@ public class ClinicController {
 		Clinic clinic = clinicService.getClinicByOwnerId(user.getId());
 
 		return ResponseEntity.ok(clinic);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteClinic(@PathVariable Long id){
+		 clinicService.deleteClinic(id);
+		 return ResponseEntity.ok("Xóa clinic thành công");
+	}
+
+
+	@PutMapping("/{clinicId}/approval")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ClinicDTO> approveClinic(
+			@PathVariable Long clinicId,
+			@RequestBody ApproveClinicRequest request
+	) throws Exception {
+		Clinic clinic = clinicService.approveClinic(
+				clinicId,
+				request.getStatus(),
+				request.getReason()
+		);
+		UserDTO user = userService.getUserById(clinic.getOwnerId());
+		return ResponseEntity.ok(ClinicMapper.mapToDTO(clinic, user));
 	}
 }

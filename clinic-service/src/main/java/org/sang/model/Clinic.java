@@ -3,6 +3,8 @@ package org.sang.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
+import org.sang.constant.ClinicStatus;
 
 @Entity
 @Table(name = "clinics")
@@ -51,8 +54,6 @@ public class Clinic {
 	@Column(nullable = false)
 	private boolean homeService;
 
-	@Column(nullable = false)
-	private boolean active;
 
 	@Column(nullable = false)
 	private Long ownerId;
@@ -62,6 +63,12 @@ public class Clinic {
 
 	@Column(nullable = false)
 	private LocalTime closeTime;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ClinicStatus status = ClinicStatus.PENDING;
+
+	private String rejectedReason;
 
 	@Override
 	public final boolean equals(Object o) {
