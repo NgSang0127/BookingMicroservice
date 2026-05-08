@@ -1,26 +1,39 @@
 package org.sang.messaging;
 
 import lombok.RequiredArgsConstructor;
-import org.sang.payload.dto.NotificationDTO;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.sang.messaging.event.NotificationEvent;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
-@Component
+@Slf4j
+@Service
 @RequiredArgsConstructor
 public class NotificationEventProducer {
-	private final RabbitTemplate rabbitTemplate;
 
-	public void sentNotificationEvent(Long bookingId,
-			Long userId,
-			Long clinicId) {
-		NotificationDTO notification=new NotificationDTO();
-		notification.setBookingId(bookingId);
-		notification.setClinicId(clinicId);
-		notification.setUserId(userId);
-		notification.setDescription("new booking got confirmed");
-		notification.setType("BOOKING");
+	private final KafkaTemplate<String, Object> kafkaTemplate;
 
-		rabbitTemplate.convertAndSend("notification-queue", notification);
+	public void sentNotificationEvent(Long bookingId, Long userId, Long clinicId) {
+		NotificationEvent event = new NotificationEvent(
+				bookingId,
+				userId,
+				clinicId,
+				"SUCCESS",
+				"Đặt lịch thành công, vui lòng đến đúng giờ"
+		);
+		kafkaTemplate.send("notification-event", String.valueOf(bookingId), event);
+		log.info("[Kafka] → notification-event SUCCESS: bookingId={}", bookingId);
+	}
 
+	public void sentFailedNotificationEvent(Long bookingId, Long userId, Long clinicId) {
+		NotificationEvent event = new NotificationEvent(
+				bookingId,
+				userId,
+				clinicId,
+				"FAILED",
+				"Đặt lịch thất bại, tiền sẽ được hoàn trong 3-5 ngày"
+		);
+		kafkaTemplate.send("notify-failed", String.valueOf(bookingId), event);
+		log.info("[Kafka] → notify-failed: bookingId={}", bookingId);
 	}
 }

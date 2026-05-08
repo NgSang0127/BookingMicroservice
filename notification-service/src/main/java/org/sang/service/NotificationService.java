@@ -11,4 +11,5 @@ public interface NotificationService {
 	Notification markNotificationAsRead(Long notificationId) throws Exception;
 	void deleteNotification(Long notificationId);
 	List<Notification> getAllNotifications();
+	boolean existsByBookingIdAndType(Long bookingId, String type);
 }

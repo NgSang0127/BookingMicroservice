@@ -37,7 +37,7 @@ public class PaymentController {
 			@RequestParam PaymentMethod paymentMethod)
 			throws UserException, RazorpayException, StripeException {
 
-		UserDTO user = userService.getUserProfile().getBody();
+		UserDTO user = userService.getUserProfile();
 		PaymentLinkResponse res = paymentService.createOrder(user, booking, paymentMethod);
 		return ResponseEntity.ok(res);
 	}

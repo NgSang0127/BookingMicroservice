@@ -66,4 +66,9 @@ public class NotificationServiceImpl implements NotificationService {
 	public List<Notification> getAllNotifications() {
 		return notificationRepository.findAll();
 	}
+
+	@Override
+	public boolean existsByBookingIdAndType(Long bookingId, String type) {
+		return notificationRepository.existsByBookingIdAndType(bookingId, type);
+	}
 }

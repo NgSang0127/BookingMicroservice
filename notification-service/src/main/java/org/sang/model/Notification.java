@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Data
@@ -21,5 +22,6 @@ public class Notification {
 	private Long userId;
 	private Long bookingId;
 	private Long clinicId;
+	@CreationTimestamp
 	private LocalDateTime createdAt;
 }
