@@ -467,12 +467,12 @@ review-service ─────────────────────�
 - [x] Xác thực OAuth2/OIDC với Keycloak
 - [x] Custom Keycloak Login Theme
 - [x] Các microservice core (User, Clinic, Booking, Payment, Review, Offer, Category, Notification)
-- [ ] Docker Compose toàn hệ thống
-- [ ] Distributed Tracing với Zipkin / Jaeger
-- [ ] Centralized Logging với ELK Stack
+- [x] Docker Compose toàn hệ thống
+- [x] Distributed Tracing với Zipkin / Jaeger
+- [x] Centralized Logging với ELK Stack
 - [ ] Circuit Breaker với Resilience4j
-- [ ] Message Queue (Kafka / RabbitMQ) cho async communication
-- [ ] Unit & Integration Tests
+- [x] Message Queue (Kafka / RabbitMQ) cho async communication
+- [x] Unit & Integration Tests
 - [ ] CI/CD Pipeline với GitHub Actions
 - [ ] Kubernetes deployment
 
